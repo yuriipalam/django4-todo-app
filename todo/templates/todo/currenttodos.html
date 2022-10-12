@@ -1,0 +1,58 @@
+{% extends 'todo/base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-dark mb-3">{{ todos_total }} Current todo{{todos|length|pluralize}}</h1>
+    {% if todos|length == 0 %}
+    <h3 class="text-dark">You don't have any active Todos. <a href="{% url 'createtodo' %}">Create New One</a></h3>
+    {% else %}
+    {% for todo in todos %}
+    <div class="list-group list-group-light">
+        <a href="{% url 'viewtodo' todo.id %}" class="list-group-item list-group-item-action px-3 border-0 rounded-3 mb-2 list-group-item-{% if todo.important %}danger{% else %}info{% endif %}">
+            {% if todo.important %}
+            <b>{{ todo.title|title }}</b>
+            {% else %}
+            {{ todo.title|title }}
+            {% endif %}
+            {% if todo.memo %}
+             - {{ todo.memo|truncatechars:25 }}
+            {% endif %}
+        </a>
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
+
+{% if todos.has_other_pages %}
+<div class="container mt-4 mb-3">
+    <div class="d-flex justify-content-center">
+        <nav aria-label="...">
+            <ul class="pagination pagination-circle">
+            {% if todos.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ todos.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+            {% for p in todos.paginator.page_range %}
+            {% if p == todos.number %}
+            <li class="page-item active" aria-current="page">
+                <a class="page-link" href="?page={{ p }}">{{ p }}<span class="visually-hidden">(current)</span></a>
+            </li>
+            {% elif p >= todos.number|add:-2 and p <= todos.number|add:2 %}
+            <li class="page-item"><a class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+            {% endif %}
+            {% endfor %}
+            {% if todos.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ todos.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
+{% endif %}
+{% endblock content %}

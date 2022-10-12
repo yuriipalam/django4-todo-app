@@ -1,0 +1,10 @@
+{% extends 'todo/base.html' %}
+{% block content %}
+<div class="container" style="height: inherit;">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="height: inherit;">
+        <h1 class="text-center text-dark">What's up, it is Todo App</h1>
+        <p style="max-width: 600px;" class="text-center">You can create as many tasks as you want like notes. It is very complicated to keep all thoughts in our heads, so TodoApp is going to make your life easier. There you go</p>
+        <a href="{% url 'signupuser' %}"><button class="btn btn-success">Let's get started</button></a>
+    </div>
+</div>
+{% endblock content %}
